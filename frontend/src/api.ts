@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import type { User } from './userSlice'
 
 interface Todo {
     id: number;
@@ -7,11 +8,11 @@ interface Todo {
 }
 
 export const rootApi = createApi({
-    reducerPath: 'userTodos',
+    reducerPath: 'api',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000/api' }),
     endpoints: (builder) => ({
-        getUser: builder.query({
-            query: () => '/api/user'
+        getUser: builder.query<User, void>({
+            query: () => 'user'
         }),
         getTodos: builder.query<Todo[], void>({
             query: () => `users/todos`

@@ -31,26 +31,31 @@ const SubmitButton = styled(Button)`
   border-radius: 8px;
 `
 
-function App() {
-  const res = useGetUserQuery(1)
-  // console.log(res)
+const Content = () => {
+  const res = useGetUserQuery()
 
   return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <Playground>
+          <FieldWrapper>
+            <TextField id="email" variant="outlined" placeholder='enter email' />
+            <TextareaAutosize id="content" placeholder='enter todo' />
+            <SubmitButton variant='outlined'>
+              Save
+            </SubmitButton>
+          </FieldWrapper>
+        </Playground>
+      </header>
+    </div>
+  )
+}
+
+function App() {
+  return (
     <Provider store={store}>
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <Playground>
-            <FieldWrapper>
-              <TextField id="email" variant="outlined" placeholder='enter email' />
-              <TextareaAutosize id="content" placeholder='enter todo' />
-              <SubmitButton variant='outlined'>
-                Save
-              </SubmitButton>
-            </FieldWrapper>
-          </Playground>
-        </header>
-      </div>
+      <Content />
     </Provider>
   );
 }
