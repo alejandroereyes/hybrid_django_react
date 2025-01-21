@@ -4,6 +4,7 @@ from django.conf import settings
 from django.http import HttpResponse, StreamingHttpResponse
 from django.template import engines
 from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
 
 # chunk out response payload for streaming
 def iter_response(response, chunk_size=65536):
@@ -16,6 +17,7 @@ def iter_response(response, chunk_size=65536):
     finally:
         response.close()
 
+@login_required(login_url="/admin/login")
 def catchcall_dev(request, upstream='http://localhost:3000'):
     upstream_url = upstream + request.path
     response = urllib.request.urlopen(upstream_url)
@@ -39,6 +41,8 @@ def catchcall_dev(request, upstream='http://localhost:3000'):
             reason=response.reason
         )
 
-catchcall_prod = TemplateView.as_view(template_name='index.html')
+@login_required
+def catchcall_prod(login_url="/admin/login"):
+    TemplateView.as_view(template_name='index.html')
 
 catchcall = catchcall_dev if settings.DEBUG else catchcall_prod
